@@ -20,6 +20,8 @@ namespace AdventOfCode
 
          var problem = serviceProvider.GetService<IProblem>();
          problem.Run();
+
+         Console.ReadKey();
       }
    }
 }
