@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AdventOfCode.Problems.Day2
+namespace AdventOfCode.Problems.Day4
 {
    public class Day4 : IProblem
    {
