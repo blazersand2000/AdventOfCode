@@ -9,18 +9,25 @@ namespace AdventOfCode.Problems.Day7
 {
    public class Day7 : IProblem
    {
+      private const int TotalDiskSpace = 70000000;
+      private const int DiskSpaceRequiredForUpdate = 30000000;
+
       public void Run()
       {
          var lines = System.IO.File.ReadAllLines("Problems/Day7/input.txt");
 
          var root = ParseFileSystem(lines);
 
-         var sum = GetAllDirectories(root).Where(d => d.Size <= 100_000).Sum(d => d.Size);
-
          Console.WriteLine("Part 1:");
+         var sum = GetAllDirectories(root).Where(d => d.Size <= 100_000).Sum(d => d.Size);
          Console.WriteLine(sum);
-         //Console.WriteLine("Part 2:");
-         //Console.WriteLine(GetFirstMarkerCharacter(input, 14));
+
+         Console.WriteLine("Part 2:");
+         var availableDiskSpace = TotalDiskSpace - root.Size;
+         var additionalSpaceNeeded = DiskSpaceRequiredForUpdate - availableDiskSpace;
+         var candidateDirectories = GetAllDirectoriesOfMinimumSize(root, additionalSpaceNeeded);
+         var directoryToDelete = candidateDirectories.OrderBy(d => d.Size).First();
+         Console.WriteLine(directoryToDelete.Size);
       }
 
       public static IDirectory ParseFileSystem(IEnumerable<string> lines)
@@ -92,6 +99,7 @@ namespace AdventOfCode.Problems.Day7
                currentCommand.Output.Add(line);
             }
          }
+         commands.Add(currentCommand);
 
          return commands;
       }
@@ -99,6 +107,16 @@ namespace AdventOfCode.Problems.Day7
       private static IEnumerable<IDirectory> GetAllDirectories(IDirectory root)
       {
          return new List<IDirectory> { root }.Concat(root.Directories.SelectMany(d => GetAllDirectories(d)));
+      }
+
+      private static IEnumerable<IDirectory> GetAllDirectoriesOfMinimumSize(IDirectory root, int minimumSize)
+      {
+         if (root.Size >= minimumSize)
+         {
+            return new List<IDirectory> { root }.Concat(root.Directories.SelectMany(d => GetAllDirectoriesOfMinimumSize(d, minimumSize)));
+         }
+
+         return new List<IDirectory>();
       }
 
       struct Command
