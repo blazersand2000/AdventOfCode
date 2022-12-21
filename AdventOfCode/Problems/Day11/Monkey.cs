@@ -8,16 +8,17 @@ namespace AdventOfCode.Problems.Day11
 {
    public class Monkey
    {
-      private readonly Queue<int> _items;
-      private readonly Func<int, int> _operation;
+      private readonly Queue<long> _items;
+      private readonly Func<long, long> _operation;
       private readonly int _divisorTest;
       private readonly Dictionary<bool, int> _testResultMonkey;
+      private readonly long? _mod;
 
       public int NumInspections { get; private set; } = 0;
 
-      public Monkey(List<int> items, string operation, int divisorTest, int toMonkeyOnFalse, int toMonkeyOnTrue)
+      public Monkey(List<long> items, string operation, int divisorTest, int toMonkeyOnFalse, int toMonkeyOnTrue, long? mod = null)
       {
-         _items = new Queue<int>(items);
+         _items = new Queue<long>(items);
          _operation = GetOperation(operation).GetAwaiter().GetResult();
          _divisorTest = divisorTest;
          _testResultMonkey = new Dictionary<bool, int>
@@ -25,11 +26,12 @@ namespace AdventOfCode.Problems.Day11
             { false, toMonkeyOnFalse },
             { true, toMonkeyOnTrue },
          };
+         _mod = mod;
       }
 
-      public Dictionary<int, Queue<int>> InspectAllItems()
+      public Dictionary<int, Queue<long>> InspectAllItems()
       {
-         var tossedItems = new Dictionary<int, Queue<int>>();
+         var tossedItems = new Dictionary<int, Queue<long>>();
 
          while(_items.Count > 0)
          {
@@ -37,7 +39,7 @@ namespace AdventOfCode.Problems.Day11
             var monkey = GetMonkeyForItem(inspectedItem);
             if (!tossedItems.ContainsKey(monkey))
             {
-               tossedItems[monkey] = new Queue<int>();
+               tossedItems[monkey] = new Queue<long>();
             }
             tossedItems[monkey].Enqueue(inspectedItem);
          }
@@ -45,7 +47,7 @@ namespace AdventOfCode.Problems.Day11
          return tossedItems;
       }
 
-      public void CatchItems(Queue<int> items)
+      public void CatchItems(Queue<long> items)
       {
          foreach (var item in items)
          {
@@ -53,7 +55,7 @@ namespace AdventOfCode.Problems.Day11
          }
       }
 
-      private int Inspect()
+      private long Inspect()
       {
          var item = _items.Dequeue();
          item = GetWorryLevelAfterInspectionAsync(item);
@@ -62,22 +64,22 @@ namespace AdventOfCode.Problems.Day11
          return item;
       }
 
-      private int GetMonkeyForItem(int item)
+      private int GetMonkeyForItem(long item)
       {
          var testResult = item % _divisorTest == 0;
          return _testResultMonkey[testResult];
       }
 
-      private int GetWorryLevelAfterInspectionAsync(int item)
+      private long GetWorryLevelAfterInspectionAsync(long item)
       {
          return _operation(item);
       }
 
-      private static async Task<Func<int, int>> GetOperation(string operation)
+      private static async Task<Func<long, long>> GetOperation(string operation)
       {
          try
          {
-            var func = await CSharpScript.EvaluateAsync<Func<int, int>>($"old => {operation}");
+            var func = await CSharpScript.EvaluateAsync<Func<long, long>>($"old => {operation}");
             return func;
          }
          catch (Exception)
@@ -87,9 +89,9 @@ namespace AdventOfCode.Problems.Day11
          }
       }
 
-      private int GetWorryLevelAfterFeelingRelieved(int item)
+      private long GetWorryLevelAfterFeelingRelieved(long item)
       {
-         return item / 3;
+         return _mod == null ? item / 3 : item % (long)_mod;
       }
 
       public class Globals
