@@ -18,4 +18,8 @@
       <ProjectReference Include="..\AdventOfCode\AdventOfCode.csproj" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Aoc2022\" />
+   </ItemGroup>
+
 </Project>

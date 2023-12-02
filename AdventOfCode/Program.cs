@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Problems;
+﻿using AdventOfCode.Aoc2022;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
