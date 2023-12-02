@@ -10,46 +10,4 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
    </ItemGroup>
 
-   <ItemGroup>
-      <None Update="Problems\Day12\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day11\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day1\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day10\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day9\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day8\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day7\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day6\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day5\example.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day5\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day4\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day3\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Problems\Day2\input.txt">
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-   </ItemGroup>
-
 </Project>
