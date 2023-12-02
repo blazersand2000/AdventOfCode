@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AdventOfCode.Aoc2023.Day1
 {
-   public class Day1 : IProblem
+   public class Day1 : Problem
    {
-      public void Run()
+      public override void Run()
       {
-         var lines = File.ReadAllLines("Aoc2023/Day1/input.txt");
+         string[] lines = ReadInputFile();
 
          Console.WriteLine(GetCalibrationValues(lines).Sum());
       }

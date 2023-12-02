@@ -63,9 +63,9 @@ namespace AdventOfCode
 
       private static List<ProblemInfo> FindAllProblems()
       {
-         // Get all types that implement IProblem
+         // Get all concrete types that implement IProblem
          var allProblems = Assembly.GetExecutingAssembly().DefinedTypes
-             .Where(ti => ti.ImplementedInterfaces.Contains(typeof(IProblem)))
+             .Where(ti => ti.ImplementedInterfaces.Contains(typeof(IProblem)) && !ti.IsAbstract)
              .Select(ti => new ProblemInfo
              {
                 Type = ti,
