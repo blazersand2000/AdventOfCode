@@ -12,6 +12,9 @@ namespace AdventOfCode.Aoc2023.Day2
 
          Console.WriteLine("Part 1:");
          Console.WriteLine(GetSumOfPossibleGameIds(lines));
+
+         Console.WriteLine("Part 2:");
+         Console.WriteLine(GetSumOfMinimumGameCubesPowers(lines));
       }
 
       public static long GetSumOfPossibleGameIds(string[] lines)
@@ -19,6 +22,14 @@ namespace AdventOfCode.Aoc2023.Day2
          var games = ParseGames(lines);
          var possibleGames = games.Where(game => game.Rounds.Max(round => round.Red) <= 12 && game.Rounds.Max(round => round.Green) <= 13 && game.Rounds.Max(round => round.Blue) <= 14);
          return possibleGames.Sum(game => game.Id);
+      }
+
+      public static long GetSumOfMinimumGameCubesPowers(string[] lines)
+      {
+         var games = ParseGames(lines);
+         var minimumCubes = games.Select(game => new BagContents(game.Rounds.Max(round => round.Red), game.Rounds.Max(round => round.Green), game.Rounds.Max(round => round.Blue)));
+         var powers = minimumCubes.Select(cubes => cubes.Red * cubes.Green * cubes.Blue);
+         return powers.Sum();
       }
 
       private static IEnumerable<Game> ParseGames(string[] lines)
