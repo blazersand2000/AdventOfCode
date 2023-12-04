@@ -35,5 +35,16 @@ namespace AdventOfCode.Tests.Aoc2023
 
          Assert.AreEqual(expected, result);
       }
+
+      [Test]
+      public void GetSumOfGearRatios_Tests()
+      {
+         var expected = 467835;
+         var schematic = Day3.ParseSchematic(testData);
+
+         var result = Day3.GetSumOfGearRatios(schematic);
+
+         Assert.AreEqual(expected, result);
+      }
    }
 }

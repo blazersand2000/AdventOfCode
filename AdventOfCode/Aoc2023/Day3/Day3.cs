@@ -7,19 +7,60 @@ namespace AdventOfCode.Aoc2023.Day3
 {
    public class Day3 : Problem
    {
+      private delegate void ProcessNumberDelegate(int row, int column, string number);
+
       public override void Run()
       {
          var lines = ReadInputFile();
          var schematic = ParseSchematic(lines);
-         var sum = GetSumOfPartNumbers(schematic);
+         var part1 = GetSumOfPartNumbers(schematic);
+         var part2 = GetSumOfGearRatios(schematic);
 
          Console.WriteLine("Part 1:");
-         Console.WriteLine(sum);
+         Console.WriteLine(part1);
+
+         Console.WriteLine("Part 2:");
+         Console.WriteLine(part2);
       }
 
       public static long GetSumOfPartNumbers(char[][] schematic)
       {
          var sum = 0;
+         void handleNumber(int row, int column, string number)
+         {
+            sum += GetPartNumber(schematic, row, column, number);
+         }
+         FindNumbers(schematic, handleNumber);
+
+         return sum;
+      }
+
+      public static long GetSumOfGearRatios(char[][] schematic)
+      {
+         // store the asterisk locations and the numbers that are adjacent to them
+         var candidateGears = new Dictionary<(int i, int j), List<int>>();
+
+         void handleNumber(int row, int column, string number)
+         {
+            var gearSymbol = '*';
+            var adjacentCells = GetAdjacentCells(schematic, row, column, number);
+            foreach (var (i, j) in adjacentCells.Where(c => schematic[c.i][c.j] == gearSymbol))
+            {
+               if (!candidateGears.ContainsKey((i, j)))
+               {
+                  candidateGears[(i, j)] = new List<int>();
+               }
+               candidateGears[(i, j)].Add(int.Parse(number));
+            }
+         }
+
+         FindNumbers(schematic, handleNumber);
+
+         return candidateGears.Where(cg => cg.Value.Count == 2).Sum(cg => cg.Value[0] * cg.Value[1]);
+      }
+
+      private static void FindNumbers(char[][] schematic, ProcessNumberDelegate handleNumber)
+      {
          var currentNumber = string.Empty;
          for (int i = 0; i < schematic.Length; i++)
          {
@@ -31,13 +72,11 @@ namespace AdventOfCode.Aoc2023.Day3
                }
                if (WeAreOnTheLastDigitOfANumber(schematic, currentNumber, i, j))
                {
-                  sum += GetPartNumber(schematic, i, j - currentNumber.Length + 1, currentNumber);
+                  handleNumber(i, j - currentNumber.Length + 1, currentNumber);
                   currentNumber = string.Empty;
                }
             }
          }
-
-         return sum;
 
          static bool WeAreOnTheLastDigitOfANumber(char[][] schematic, string currentNumber, int i, int j)
          {
@@ -48,7 +87,7 @@ namespace AdventOfCode.Aoc2023.Day3
 
       private static int GetPartNumber(char[][] schematic, int i, int j, string number)
       {
-         IEnumerable<(int i, int j)> inBoundsAdjacentCells = GetAdjacentCells(schematic, i, j, number);
+         var inBoundsAdjacentCells = GetAdjacentCells(schematic, i, j, number);
 
          var isPartNumber = inBoundsAdjacentCells.Any(c => IsSymbol(schematic[c.i][c.j]));
 
