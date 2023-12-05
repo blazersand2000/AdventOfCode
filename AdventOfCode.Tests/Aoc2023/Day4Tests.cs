@@ -31,5 +31,16 @@ namespace AdventOfCode.Tests.Aoc2023
 
          Assert.AreEqual(expected, result);
       }
+
+      [Test]
+      public void GetTotalScratchCards_Tests()
+      {
+         var expected = 30;
+         var cards = Day4.ParseCards(testData);
+
+         var result = Day4.GetTotalScratchCards(cards);
+
+         Assert.AreEqual(expected, result);
+      }
    }
 }

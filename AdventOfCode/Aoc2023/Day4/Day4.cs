@@ -14,13 +14,24 @@ namespace AdventOfCode.Aoc2023.Day4
          Console.WriteLine("Part 1:");
          Console.WriteLine(GetSumOfCardPoints(cards));
 
-         // Console.WriteLine("Part 2:");
-         // Console.WriteLine(part2);
+         Console.WriteLine("Part 2:");
+         Console.WriteLine(GetTotalScratchCards(cards));
       }
 
       public static long GetSumOfCardPoints(Dictionary<int, Card> cards)
       {
-         return cards.Values.Sum(card => card.Points());
+         return cards.Values.Sum(card => card.Points);
+      }
+
+      public static long GetTotalScratchCards(Dictionary<int, Card> cards)
+      {
+         return cards.Sum(card => GetTotalCardsForCard(cards, card.Key));
+      }
+
+      public static long GetTotalCardsForCard(Dictionary<int, Card> cards, int cardNumber)
+      {
+         var numberOfMatches = cards[cardNumber].NumberOfMatches;
+         return 1 + Enumerable.Range(1, numberOfMatches).Sum(i => GetTotalCardsForCard(cards, cardNumber + i));
       }
 
       public static Dictionary<int, Card> ParseCards(string[] lines)
@@ -36,12 +47,19 @@ namespace AdventOfCode.Aoc2023.Day4
          });
       }
 
-      public readonly record struct Card(HashSet<string> WinningNumbers, HashSet<string> NumbersYouHave)
+      public readonly struct Card
       {
-         public int Points()
+         public HashSet<string> WinningNumbers { get; }
+         public HashSet<string> NumbersYouHave { get; }
+         public int NumberOfMatches { get; }
+         public int Points { get; }
+
+         public Card(HashSet<string> winningNumbers, HashSet<string> numbersYouHave)
          {
-            var numberOfMatches = WinningNumbers.Intersect(NumbersYouHave).Count();
-            return numberOfMatches == 0 ? 0 : 1 << (numberOfMatches - 1);
+            WinningNumbers = winningNumbers;
+            NumbersYouHave = numbersYouHave;
+            NumberOfMatches = WinningNumbers.Intersect(NumbersYouHave).Count();
+            Points = NumberOfMatches == 0 ? 0 : 1 << (NumberOfMatches - 1);
          }
       }
    }
