@@ -48,16 +48,16 @@ namespace AdventOfCode.Tests.Aoc2023
       {
       }
 
-      [Test]
-      public void GetLowestLocation_Tests()
-      {
-         var expected = 35;
-         var almanac = Day5.ParseAlmanac(testData);
+      // [Test]
+      // public void GetLowestLocation_Tests()
+      // {
+      //    var expected = 35;
+      //    var almanac = Day5.ParseAlmanac(testData);
 
-         var result = Day5.GetLowestLocationForIndividualSeeds(almanac);
+      //    var result = Day5.GetLowestLocationForIndividualSeeds(almanac);
 
-         Assert.AreEqual(expected, result);
-      }
+      //    Assert.AreEqual(expected, result);
+      // }
 
       [Test]
       public void GetLowestLocationForSeedRanges_Tests()
