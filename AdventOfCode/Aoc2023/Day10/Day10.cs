@@ -174,18 +174,10 @@ namespace AdventOfCode.Aoc2023.Day10
       private static (Point Next, Move Move) GetNext(char[][] grid, Point previous, Point current)
       {
          var connections = GetConnections(grid, current);
-         try
-         {
-            var next = connections.Where(c => c != previous).Single();
-            var direction = GetMove(previous, current, next);
+         var next = connections.Where(c => c != previous).Single();
+         var direction = GetMove(previous, current, next);
 
-            return (next, direction);
-         }
-         catch (System.Exception ex)
-         {
-
-            throw;
-         }
+         return (next, direction);
       }
 
       private static Move GetMove(Point previous, Point current, Point next)
