@@ -85,37 +85,48 @@ namespace AdventOfCode.Aoc2023.Day12
          return possibleArrangements;
       }
 
-      public static List<Record> GetPossibleArrangementsPlusPlus(Record record)
+      private static Record UnfoldRecord(Record record)
       {
-         var possibleArrangements = new List<Record>();
-         var damagedLocations = record.Springs.Select((s, i) => (s, i)).Where(x => x.s == '?').Select(t => t.i).ToArray();
-         var numCominations = 1 << damagedLocations.Length;
-         for (int i = 0; i < numCominations; i++)
+         var springs = string.Join('?', Enumerable.Repeat(record.Springs, 5));
+         var damagedGroups = record.DamagedGroups.SelectMany(g => Enumerable.Repeat(g, 5));
+         return new Record(springs, damagedGroups.ToArray());
+      }
+
+      public static long GetNumberOfPossibleArrangements(Record record)
+      {
+         if (record.DamagedGroups.Length == 0)
          {
-            var combination = i;
-            var springs = record.Springs.ToCharArray();
-            for (int j = 0; j < damagedLocations.Length; j++)
-            {
-               var damagedLocation = damagedLocations[j];
-               var damaged = (combination & 1) == 1;
-               if (damaged)
-               {
-                  springs[damagedLocation] = '#';
-               }
-               else
-               {
-                  springs[damagedLocation] = '.';
-               }
-               combination >>= 1;
-            }
-            var candidate = new Record(new string(springs), record.DamagedGroups);
-            if (UndamagedRecordIsValid(candidate))
-            {
-               possibleArrangements.Add(candidate);
-            }
+            return 1;
          }
 
-         return possibleArrangements;
+         var numPossibleArrangements = 0L;
+         int groupSize = record.DamagedGroups.First();
+         var remainingGroupSizes = record.DamagedGroups.Skip(1).ToArray();
+         var endBuffer = remainingGroupSizes.Length == 0 ? 0
+            : remainingGroupSizes.Sum() + remainingGroupSizes.Length;
+         for (int i = 0; i < record.Springs.Length - endBuffer - (groupSize - 1); i++)
+         {
+            var candidate = record.Springs.Substring(i, groupSize);
+            if (candidate.Any(c => c != '?' && c != '#'))
+            {
+               continue;
+            }
+            var firstIndexAfterCandidate = i + groupSize;
+            if (firstIndexAfterCandidate < record.Springs.Length && !(new[] { '.', '?' }.Contains(record.Springs[firstIndexAfterCandidate])))
+            {
+               continue;
+            }
+            var lastIndexBeforeCandidate = i - 1;
+            if (lastIndexBeforeCandidate >= 0 && !(new[] { '.', '?' }.Contains(record.Springs[lastIndexBeforeCandidate])))
+            {
+               continue;
+            }
+            var nextSprings = remainingGroupSizes.Length == 0 ? ""
+               : record.Springs.Substring(firstIndexAfterCandidate + 1);
+            var remaining = GetNumberOfPossibleArrangements(new Record(nextSprings, remainingGroupSizes));
+            numPossibleArrangements += remaining;
+         }
+         return numPossibleArrangements;
       }
 
       public sealed record Record
