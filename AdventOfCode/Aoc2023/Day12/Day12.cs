@@ -17,16 +17,24 @@ namespace AdventOfCode.Aoc2023.Day12
          Console.WriteLine("Part 1:");
          Console.WriteLine(part1);
 
-         // var part2 = Part2(lines);
-         // Console.WriteLine("Part 2:");
-         // Console.WriteLine(part2);
+         var part2 = Part2(lines);
+         Console.WriteLine("Part 2:");
+         Console.WriteLine(part2);
       }
 
-      public static int Part1(string[] lines)
+      public static long Part1(string[] lines)
       {
          var records = ParseRecords(lines);
-         var possibleArrangements = records.Select(GetPossibleArrangements).ToArray();
-         return possibleArrangements.Sum(a => a.Count);
+         var possibleArrangements = records.Select(r => GetNumberOfPossibleArrangements(r)).ToArray();
+         return possibleArrangements.Sum();
+      }
+
+      public static long Part2(string[] lines)
+      {
+         var records = ParseRecords(lines);
+         var unfoldedRecords = records.Select(UnfoldRecord).ToArray();
+         var possibleArrangements = unfoldedRecords.Select(r => GetNumberOfPossibleArrangements(r)).ToArray();
+         return possibleArrangements.Sum();
       }
 
       public static IEnumerable<Record> ParseRecords(string[] lines)
@@ -119,7 +127,7 @@ namespace AdventOfCode.Aoc2023.Day12
             var lastIndexBeforeCandidate = i - 1;
             if (lastIndexBeforeCandidate >= 0 && !(new[] { '.', '?' }.Contains(record.Springs[lastIndexBeforeCandidate])))
             {
-               continue;
+               return numPossibleArrangements;
             }
             var nextSprings = remainingGroupSizes.Length == 0 ? ""
                : record.Springs.Substring(firstIndexAfterCandidate + 1);
