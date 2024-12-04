@@ -28,5 +28,13 @@ namespace AdventOfCode.Tests.Aoc2024
 
          Assert.AreEqual(2, result);
       }
+
+      [Test]
+      public void GetNumberOfSafeReportUsingDampener()
+      {
+         var result = Day2.GetNumberOfSafeReportsUsingDampener(testData);
+
+         Assert.AreEqual(4, result);
+      }
    }
 }
