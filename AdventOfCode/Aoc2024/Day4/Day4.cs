@@ -15,8 +15,8 @@ namespace AdventOfCode.Aoc2024.Day4
          Console.WriteLine("Part 1:");
          Console.WriteLine(GetNumberOfWordMatches(lines));
 
-         // Console.WriteLine("Part 2:");
-         // Console.WriteLine(GetSumOfEnabledMultiplicationResults(lines));
+         Console.WriteLine("Part 2:");
+         Console.WriteLine(GetNumberOfX_MAS(lines));
       }
 
       public static int GetNumberOfWordMatches(string[] lines)
@@ -26,6 +26,24 @@ namespace AdventOfCode.Aoc2024.Day4
          var searchStrings = GetPassesForEdges(lines).Select(pass => string.Join(string.Empty, pass.Select(coordinate => lines[coordinate.Row][coordinate.Col])));
 
          return searchStrings.Sum(s => Regex.Matches(s, pattern).Count);
+      }
+
+      public static int GetNumberOfX_MAS(string[] lines)
+      {
+         var count = 0;
+
+         for (int i = 0; i < lines.Length - 2; i++)
+         {
+            for (int j = 0; j < lines[0].Length - 2; j++)
+            {
+               if (IsX_MAS(lines, new Coordinate(i, j)))
+               {
+                  count++;
+               }
+            }
+         }
+
+         return count;
       }
 
       private static IEnumerable<IEnumerable<Coordinate>> GetPassesForEdges(string[] lines)
@@ -84,6 +102,30 @@ namespace AdventOfCode.Aoc2024.Day4
       public static bool CoordinateInBounds(Coordinate coordinate, int rows, int cols)
       {
          return coordinate.Col >= 0 && coordinate.Col < cols && coordinate.Row >= 0 && coordinate.Row < rows;
+      }
+
+      private static bool IsX_MAS(string[] lines, Coordinate upperLeft)
+      {
+         var ul = lines[upperLeft.Row][upperLeft.Col];
+         var ur = lines[upperLeft.Row][upperLeft.Col + 2];
+         var m = lines[upperLeft.Row + 1][upperLeft.Col + 1];
+         var ll = lines[upperLeft.Row + 2][upperLeft.Col];
+         var lr = lines[upperLeft.Row + 2][upperLeft.Col + 2];
+
+         if (m != 'A')
+         {
+            return false;
+         }
+         if (!((ul == 'M' && lr == 'S') || (ul == 'S' && lr == 'M')))
+         {
+            return false;
+         }
+         if (!((ur == 'M' && ll == 'S') || (ur == 'S' && ll == 'M')))
+         {
+            return false;
+         }
+
+         return true;
       }
    }
 

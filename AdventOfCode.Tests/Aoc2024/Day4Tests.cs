@@ -32,5 +32,13 @@ namespace AdventOfCode.Tests.Aoc2024
 
          Assert.AreEqual(18, result);
       }
+
+      [Test]
+      public void GetNumberOfX_MAS()
+      {
+         var result = Day4.GetNumberOfX_MAS(testData);
+
+         Assert.AreEqual(9, result);
+      }
    }
 }
