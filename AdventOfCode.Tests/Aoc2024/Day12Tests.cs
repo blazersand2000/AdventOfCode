@@ -34,13 +34,12 @@ namespace AdventOfCode.Tests.Aoc2024
          Assert.AreEqual(1930, result);
       }
 
-      // [TestCase(6, 22)]
-      // [TestCase(25, 55312)]
-      // public void GetNumberOfStonesWithMemoization(int numBlinks, long expected)
-      // {
-      //    var result = Day11.GetNumberOfStonesWithMemoization(numBlinks, testData);
+      [Test]
+      public void GetTotalPriceOfFencingWithBulkDiscount()
+      {
+         var result = Day12.GetTotalPriceOfFencingWithBulkDiscount(testData);
 
-      //    Assert.AreEqual(expected, result);
-      // }
+         Assert.AreEqual(1206, result);
+      }
    }
 }
