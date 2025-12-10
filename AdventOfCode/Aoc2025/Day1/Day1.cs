@@ -82,10 +82,4 @@ public class Day1 : Problem
       var rotatedPossiblyNegative = (current + rotation) % DIAL_LENGTH;
       return rotatedPossiblyNegative < 0 ? (uint)(rotatedPossiblyNegative + DIAL_LENGTH) : (uint)rotatedPossiblyNegative;
    }
-
-   // Only supports positive rotations
-   private static uint GetNumberOfTimesPointingAtZero(uint current, uint rotation)
-   {
-      return (current + rotation) / DIAL_LENGTH;
-   }
 }
