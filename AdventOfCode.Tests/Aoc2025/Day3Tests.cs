@@ -20,10 +20,18 @@ class Day3Tests
    }
 
    [Test]
-   public void GetSumOfInvalidIds()
+   public void GetTotalOutputJoltage_TwoDigits()
    {
-      var result = Day3.GetTotalOutputJoltage(testData);
+      var result = Day3.GetTotalOutputJoltage(testData, 2);
 
       Assert.AreEqual(357, result);
+   }
+
+   [Test]
+   public void GetTotalOutputJoltage_TwelveDigits()
+   {
+      var result = Day3.GetTotalOutputJoltage(testData, 12);
+
+      Assert.AreEqual(3121910778619, result);
    }
 }
