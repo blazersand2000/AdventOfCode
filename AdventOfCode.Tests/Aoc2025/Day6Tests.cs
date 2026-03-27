@@ -28,11 +28,11 @@ class Day6Tests
       Assert.AreEqual(4277556, result);
    }
 
-   // [Test]
-   // public void GetCountOfIngredientsConsideredToBeFresh()
-   // {
-   //    var result = Day5.GetCountOfIngredientsConsideredToBeFresh(testData);
+   [Test]
+   public void GetGrandTotalUsingCephalopodMath()
+   {
+      var result = Day6.GetGrandTotalUsingCephalopodMath(testData);
 
-   //    Assert.AreEqual(14, result);
-   // }
+      Assert.AreEqual(3263827, result);
+   }
 }
